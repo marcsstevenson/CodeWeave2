@@ -1,20 +1,50 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-<h2>Here are some links to help you start: </h2>
-<ul>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://angular.io/tutorial">Tour of Heroes</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://github.com/angular/angular-cli/wiki">CLI Documentation</a></h2>
-  </li>
-  <li>
-    <h2><a target="_blank" rel="noopener" href="https://blog.angular.io/">Angular blog</a></h2>
-  </li>
-</ul>
+<div class="container">
+  <div style="text-align:center">
+    <h1>
+      Code Weave
+    </h1>
+  </div>
+  <div class="row">
+    <!--<a href="http://localhost:57125/">Test</a>-->
 
+    <div class="col-md-6">
+      <h3>Template Code</h3>
+      <textarea class="form-control" rows="12" [(ngModel)]="model.Take"
+        placeholder="The seed code"></textarea>
+        <!--   -->
+      <!-- [(ngModel)]-options="{ debounce: 700 }" -->
+      <div>Note: {{index}} can be used to insert an index value</div>
+    </div>
+    <div class="col-md-6">
+      <h3>Substitution Value</h3>
+      <input class="form-control" type="text" [(ngModel)]="model.WeaveSubstitution" 
+      
+      />
+      <!-- [(ngModel)]-options="{ debounce: 700 }"  -->
+      <h3>Swap Value(s)</h3>
+      <textarea class="form-control" rows="10" [(ngModel)]="model.WeaveValues" 
+      ></textarea>
+      <!-- [(ngModel)]-options="{ debounce: 700 }" -->
+      <button class="btn btn-primary" (click)="Weave()">Weave</button>
+      <button class="btn btn-primary" (click)="SwapOrder()">Swap Order</button>
+    </div>
+  </div>
+<!-- 
+  <div class="row">
+    <div class="col-md-12">
+      <h3>Weave Result</h3>
+      <textarea class="form-control" rows="10" [(ngModel)]="Result"></textarea>
+    </div>
+  </div>
+
+  <h1>Filter</h1>
+  <button class="btn btn-primary" (click)="Filter()">Filter</button>
+  <div class="row">
+    <div class="col-md-6">
+      <textarea class="form-control" rows="10" [(ngModel)]="FilterIn"></textarea>
+    </div>
+    <div class="col-md-6">
+      <textarea class="form-control" rows="10" [(ngModel)]="FilterOut"></textarea>
+    </div>
+  </div> -->
+</div>
