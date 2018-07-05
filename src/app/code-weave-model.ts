@@ -1,6 +1,6 @@
 export class CodeWeaveModel {
-    Take: string = 'Ring around the rosey';
-    WeaveSubstitution: string = 'rosey';
-    WeaveValues: string = 'posey\r\nhosey\r\nTrump';
-    FilterIn: string = '';
+    Take = 'Ring around the rosey';
+    WeaveSubstitution = 'rosey';
+    WeaveValues = 'posey\r\nhosey\r\nTrump';
+    FilterIn = '';
 }

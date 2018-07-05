@@ -8,16 +8,17 @@ import { CodeWeaveModel } from 'src/app/code-weave-model';
 export class StorageService {
   @LocalStorage() private codeWeaveModel: CodeWeaveModel;
 
-  public getCodeWeaveModel(): CodeWeaveModel{
-    var storedValue = this.codeWeaveModel;
+  public getCodeWeaveModel(): CodeWeaveModel {
+    let storedValue = this.codeWeaveModel;
 
-    if(storedValue == null)
+    if (storedValue == null) {
       storedValue = new CodeWeaveModel();
-    
+    }
+
     return storedValue;
   }
 
-  public setCodeWeaveModel(newValue: CodeWeaveModel){
+  public setCodeWeaveModel(newValue: CodeWeaveModel) {
     this.codeWeaveModel = newValue;
   }
 

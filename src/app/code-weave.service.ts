@@ -8,12 +8,12 @@ export class CodeWeaveService {
   constructor() { }
 
   public Weave = function (WeaveValues, Take: string, WeaveSubstitution) {
-    var result = "";
+    let result = '';
 
-    for (var i = 0; i < WeaveValues.length; i++) {
-      result += this.ReplaceAll(Take, WeaveSubstitution, WeaveValues[i]) + "\n";
+    for (let i = 0; i < WeaveValues.length; i++) {
+      result += this.ReplaceAll(Take, WeaveSubstitution, WeaveValues[i]) + '\n';
 
-      //Swap {{index} for the counter i
+      // Swap {{index} for the counter i
       result = this.ReplaceAll(result, '{{index}}', i);
     }
 
@@ -21,19 +21,20 @@ export class CodeWeaveService {
   };
 
   public ReplaceAll = function (str, find, replace) {
-    if (typeof str === 'undefined' || !str)
+    if (typeof str === 'undefined' || !str) {
       return '';
+    }
 
     return str.replace(new RegExp(find, 'g'), replace);
-  }
+  };
 
   public SwapOrder = function (WeaveValues) {
-    var returnArray = []
+    const returnArray = [];
 
-    for (var i = WeaveValues.length - 1; i >= 0; i--) {
+    for (let i = WeaveValues.length - 1; i >= 0; i--) {
       returnArray.push(WeaveValues[i]);
     }
 
     return returnArray;
-  }
+  };
 }

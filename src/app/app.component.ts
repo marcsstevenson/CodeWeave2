@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CodeWeaveService } from 'src/app/code-weave.service';
 import { StorageService } from 'src/app/storage.service';
 import { CodeWeaveModel } from 'src/app/code-weave-model';
 import { map, filter, switchMap, debounceTime } from 'rxjs/operators';
-import { Observable, Subject, ReplaySubject, from, of, range, observable } from "rxjs";
+import { Observable, Subject, ReplaySubject, from, of, range, observable } from 'rxjs';
 
 @Component({
   selector: 'cw-root',
@@ -14,10 +13,12 @@ import { Observable, Subject, ReplaySubject, from, of, range, observable } from 
 })
 export class AppComponent implements OnInit {
   constructor(
-    private _storageService: StorageService
+    private _storageService: StorageService,
+    private _codeWeaveService: CodeWeaveService,
   ) { }
 
-  title: string = 'cw';
+  index = '<i>';
+  title = 'cw';
   Take: string;
   model: CodeWeaveModel;
   subject: Subject<CodeWeaveModel> = new Subject<CodeWeaveModel>();
@@ -25,7 +26,7 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.model = this._storageService.getCodeWeaveModel();
 
-    let obs = this.subject.asObservable();
+    const obs = this.subject.asObservable();
 
     obs
       .pipe(debounceTime(500))
@@ -33,39 +34,34 @@ export class AppComponent implements OnInit {
         next: value => this.Weave(), // 1
       });
 
-    // console.log(range(1,5));
-    // var ob = new Observable();
-    // range(1, 10)
-    //   .pipe(debounceTime(1000))
-    //   .subscribe(x => console.log(x));
-
-    // console.log(this.model);
-
-    // const node = document.querySelector('input');
-
-    // const one$ = new Observable(observer => {
-    //   observer.next(1);
-    //   observer.next(2);
-    //   observer.next(3);
-    //   observer.complete();
-    // });
-
-    // one$
-    //   .pipe(debounceTime(1000))
-    //   .subscribe({
-    //     next: value => console.log(value), // 1
-    //   });
-
     this.Weave();
   }
 
-  modelChange(newValue){
+  modelChange() {
+    console.log(this.model);
     this.subject.next(this.model);
+  }
+
+  SwapOrder() {
+    console.log('before');
+    this.modelChange();
+    console.log('after');
+    const values = this.model.WeaveValues.split('\n');
+    const newValues = this._codeWeaveService.SwapOrder(values);
+    let newWeaveValues = '';
+
+    for (let i = 0; i < newValues.length; i++) {
+        newWeaveValues += newValues[i] + '\n';
+    }
+
+    this.model.WeaveValues = newWeaveValues;
   }
 
   Weave() {
     console.log('Weaving');
     this.SaveToStorage();
+
+    console.log(this.model.Take);
     // var values = $scope.WeaveValues.split("\n");
     // var result = "";
 

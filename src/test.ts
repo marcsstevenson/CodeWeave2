@@ -12,6 +12,7 @@ declare const require: any;
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
   BrowserDynamicTestingModule,
+  // FormsModule,
   platformBrowserDynamicTesting()
 );
 // Then we find all the tests.
