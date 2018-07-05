@@ -4,47 +4,24 @@
       Code Weave
     </h1>
   </div>
-  <div class="row">
-    <!--<a href="http://localhost:57125/">Test</a>-->
-
+   <div class="row">
     <div class="col-md-6">
       <h3>Template Code</h3>
-      <textarea class="form-control" rows="12" [(ngModel)]="model.Take"
-        placeholder="The seed code"></textarea>
-        <!--   -->
-      <!-- [(ngModel)]-options="{ debounce: 700 }" -->
+      <textarea class="form-control" rows="12" [(ngModel)]="model.Take" 
+        (ngModelChange)="modelChange(newValue)"
+        placeholder="The seed code">
+      </textarea>
       <div>Note: {{index}} can be used to insert an index value</div>
     </div>
-    <div class="col-md-6">
+    <!--<div class="col-md-6">
       <h3>Substitution Value</h3>
       <input class="form-control" type="text" [(ngModel)]="model.WeaveSubstitution" 
-      
-      />
-      <!-- [(ngModel)]-options="{ debounce: 700 }"  -->
+        (ngModelChange)="modelChange(newValue)"/>
       <h3>Swap Value(s)</h3>
       <textarea class="form-control" rows="10" [(ngModel)]="model.WeaveValues" 
-      ></textarea>
-      <!-- [(ngModel)]-options="{ debounce: 700 }" -->
+        (ngModelChange)="modelChange(newValue)"></textarea>
       <button class="btn btn-primary" (click)="Weave()">Weave</button>
       <button class="btn btn-primary" (click)="SwapOrder()">Swap Order</button>
-    </div>
-  </div>
-<!-- 
-  <div class="row">
-    <div class="col-md-12">
-      <h3>Weave Result</h3>
-      <textarea class="form-control" rows="10" [(ngModel)]="Result"></textarea>
-    </div>
-  </div>
-
-  <h1>Filter</h1>
-  <button class="btn btn-primary" (click)="Filter()">Filter</button>
-  <div class="row">
-    <div class="col-md-6">
-      <textarea class="form-control" rows="10" [(ngModel)]="FilterIn"></textarea>
-    </div>
-    <div class="col-md-6">
-      <textarea class="form-control" rows="10" [(ngModel)]="FilterOut"></textarea>
     </div>
   </div> -->
 </div>

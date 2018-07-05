@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CodeWeaveService } from 'src/app/code-weave.service';
 import { StorageService } from 'src/app/storage.service';
 import { CodeWeaveModel } from 'src/app/code-weave-model';
 import { map, filter, switchMap, debounceTime } from 'rxjs/operators';
@@ -8,18 +10,28 @@ import { Observable, Subject, ReplaySubject, from, of, range, observable } from 
   selector: 'cw-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [StorageService]
+  providers: [CodeWeaveService, StorageService]
 })
 export class AppComponent implements OnInit {
   constructor(
     private _storageService: StorageService
   ) { }
 
+  title: string = 'cw';
   Take: string;
   model: CodeWeaveModel;
+  subject: Subject<CodeWeaveModel> = new Subject<CodeWeaveModel>();
 
   ngOnInit() {
     this.model = this._storageService.getCodeWeaveModel();
+
+    let obs = this.subject.asObservable();
+
+    obs
+      .pipe(debounceTime(500))
+      .subscribe({
+        next: value => this.Weave(), // 1
+      });
 
     // console.log(range(1,5));
     // var ob = new Observable();
@@ -44,27 +56,15 @@ export class AppComponent implements OnInit {
     //     next: value => console.log(value), // 1
     //   });
 
-    const source = new Subject();
-
-    source
-      // .subscribe(
-      //   (value) => console.log(value),
-      //   undefined,
-      //   () => console.log("completed; changed back to null")
-      // );
-      .pipe(debounceTime(1000))
-      .subscribe({
-        next: value => console.log(value), // 1
-      });
-      
-    source.next(1);
-    source.next(2);
-    source.next(3);
-
     this.Weave();
   }
 
+  modelChange(newValue){
+    this.subject.next(this.model);
+  }
+
   Weave() {
+    console.log('Weaving');
     this.SaveToStorage();
     // var values = $scope.WeaveValues.split("\n");
     // var result = "";
