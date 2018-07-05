@@ -13,7 +13,7 @@ export class CodeWeaveService {
     for (let i = 0; i < WeaveValues.length; i++) {
       result += this.ReplaceAll(Take, WeaveSubstitution, WeaveValues[i]) + '\n';
 
-      // Swap {{index} for the counter i
+      // Swap {{index}} for the counter i
       result = this.ReplaceAll(result, '{{index}}', i);
     }
 

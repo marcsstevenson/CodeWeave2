@@ -14,7 +14,7 @@ describe('CodeWeaveService', () => {
   }));
 
   it('ReplaceAll shall replace all :O', inject([CodeWeaveService], (service: CodeWeaveService) => {
-    let result = service.ReplaceAll('something here', 'here', 'else')
+    const result = service.ReplaceAll('something here', 'here', 'else');
     expect(result).toEqual('something else');
   }));
 });

@@ -20,6 +20,7 @@ export class AppComponent implements OnInit {
   index = '<i>';
   title = 'cw';
   Take: string;
+  result: string;
   model: CodeWeaveModel;
   subject: Subject<CodeWeaveModel> = new Subject<CodeWeaveModel>();
 
@@ -58,20 +59,20 @@ export class AppComponent implements OnInit {
   }
 
   Weave() {
-    console.log('Weaving');
+    // console.log('Weaving');
     this.SaveToStorage();
 
-    console.log(this.model.Take);
-    // var values = $scope.WeaveValues.split("\n");
-    // var result = "";
+    // console.log(this.model.Take);
+    const values = this.model.WeaveValues.split('\n');
+    // let workingValue = '';
 
-    // for (var i = 0; i < values.length; i++) {
-    //     result += $scope.ReplaceAll($scope.Take, $scope.WeaveSubstitution, values[i]) + "\n";
-    //     //Swap {{index} for the counter i
-    //     result = $scope.ReplaceAll(result, '{{index}}', i);
+    // for (let i = 0; i < values.length; i++) {
+    //   workingValue += this._codeWeaveService.ReplaceAll(this.model.Take, this.model.WeaveSubstitution, values[i]) + '\n';
+    //     // Swap {{index} for the counter i
+    //     workingValue = this._codeWeaveService.ReplaceAll(workingValue, '{{index}}', i);
     // }
 
-    // $scope.Result = CodeWeaveService.Weave(values, $scope.Take, $scope.WeaveSubstitution);
+    this.result = this._codeWeaveService.Weave(values, this.model.Take, this.model.WeaveSubstitution);
   }
 
   SaveToStorage() {
