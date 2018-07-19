@@ -39,20 +39,22 @@ export class AppComponent implements OnInit {
   }
 
   modelChange() {
-    console.log(this.model);
     this.subject.next(this.model);
   }
 
   SwapOrder() {
-    console.log('before');
     this.modelChange();
-    console.log('after');
     const values = this.model.WeaveValues.split('\n');
     const newValues = this._codeWeaveService.SwapOrder(values);
     let newWeaveValues = '';
 
     for (let i = 0; i < newValues.length; i++) {
-        newWeaveValues += newValues[i] + '\n';
+      newWeaveValues += newValues[i];
+
+      // Add a new line if this is not the last line
+      if (i < newValues.length - 1) {
+        newWeaveValues += '\n';
+      }
     }
 
     this.model.WeaveValues = newWeaveValues;
