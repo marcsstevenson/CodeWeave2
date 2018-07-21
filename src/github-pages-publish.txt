@@ -1,0 +1,13 @@
+To publish to github pages. From terminal at the root of the repo.
+
+Ensure that the angular cli github pages npm package is installed globally:
+
+  npm i -g angular-cli-ghpages
+
+Create a production build with a base ref (which will add a <base> to the <head> of the index.html):
+
+  ng build --prod --base-href https://marcsstevenson.github.io/CodeWeave2/
+
+Then publish to github pages using the created dist (CodeWeave2)
+
+  ngh --dir dist/CodeWeave2

@@ -7,36 +7,25 @@
   <div class="row">
     <div class="col-md-6">
       <h3>Template Code</h3>
-      <textarea class="form-control" rows="12" [(ngModel)]="model.Take"
-        (ngModelChange)="modelChange()" placeholder="The seed code">
+      <textarea class="form-control" rows="12" [(ngModel)]="model.Take" (ngModelChange)="modelChange()" placeholder="The seed code">
       </textarea>
-      <div>Note: {{index}} can be used to insert an index value</div>
+      <div ngNonBindable>Note: {{index}} can be used to insert an index value</div>
     </div>
     <div class="col-md-6">
       <h3>Substitution Value</h3>
-      <input class="form-control" type="text" [(ngModel)]="model.WeaveSubstitution"
-        (ngModelChange)="modelChange()" />
+      <input class="form-control" type="text" [(ngModel)]="model.WeaveSubstitution" (ngModelChange)="modelChange()" />
       <h3>Swap Value(s)</h3>
-      <textarea class="form-control" rows="10" [(ngModel)]="model.WeaveValues"
-        (ngModelChange)="modelChange()"></textarea>
-      <button class="btn btn-primary" (click)="Weave()">Weave</button>
-      <button class="btn btn-primary" (click)="SwapOrder()">Swap Order</button>
+      <textarea class="form-control" rows="10" [(ngModel)]="model.WeaveValues" (ngModelChange)="modelChange()"></textarea>
+      <div class="form-inline" role="group">
+        <button class="btn btn-primary" (click)="Weave()">Weave</button>
+        <button class="btn btn-primary ml-2" (click)="SwapOrder()">Swap Order</button>
+      </div>
     </div>
   </div>
   <div class="row">
-     <div class="col-md-12">
-         <h3>Weave Result</h3>
-       <textarea class="form-control" rows="10" [ngModel]="result"></textarea>
-     </div>
+    <div class="col-md-12">
+      <h3>Weave Result</h3>
+      <textarea class="form-control" rows="10" [ngModel]="result"></textarea>
+    </div>
   </div>
-
-  <!-- <h1>Filter</h1><button class="btn btn-primary" (click)="Filter()">Filter</button>
-  <div class="row">
-     <div class="col-md-6">
-       <textarea class="form-control" rows="10" [(ngModel)]="model.FilterIn"></textarea>
-     </div>
-     <div class="col-md-6">
-       <textarea class="form-control" rows="10" [(ngModel)]="model.FilterOut"></textarea>
-     </div>
-  </div> -->
 </div>
