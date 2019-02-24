@@ -16,7 +16,7 @@
           placeholder="The seed code"
         >
         </textarea>
-        <div ngNonBindable>Note: {{ index }} can be used to insert an index value</div>
+        <div ngNonBindable>Note: {{index}} can be used to insert an index value</div>
     </div>
   </div>
   <hr />
@@ -36,14 +36,17 @@
               (ngModelChange)="modelChange()"
             />
             Swap Values
-            <div *ngFor="let swapValue of weaveSet.SwapValues; index as i; trackBy:trackByFn">
+            <!-- <div *ngFor="let swapValue of weaveSet.SwapValues; index as i; trackBy:trackByFn">
               <input
                 class="form-control"
                 type="text"
                 [ngModel]="weaveSet.SwapValues[i]"
                 (ngModelChange)="updateSwapValue(weaveSet, i, $event)"
               />
-            </div>
+            </div> -->
+
+            <textarea class="form-control" rows="10" [(ngModel)]="weaveSet.SwapValuesText"
+              (ngModelChange)="modelChange()"></textarea>
         </div>
         <div style="clear: both"></div>
     </div>

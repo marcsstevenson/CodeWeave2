@@ -6,7 +6,7 @@ import { CodeWeaveModel } from 'src/app/models/code-weave-model';
   providedIn: 'root'
 })
 export class StorageService {
-  private expectedVersion = 1;
+  private expectedVersion = 2;
   @LocalStorage() private codeWeaveModel: CodeWeaveModel;
 
   public getCodeWeaveModel(): CodeWeaveModel {

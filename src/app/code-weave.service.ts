@@ -1,25 +1,25 @@
 import { Injectable } from '@angular/core';
 import { WeaveSet } from './models/weave-set';
+import { WeaveSetManagerService } from './weave-set-manager.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CodeWeaveService {
 
-  constructor() {
-    // this.Test();
+  constructor(private _weaveSetManagerService: WeaveSetManagerService) {
   }
 
-  public Test() {
-    const weaveSets: WeaveSet[] = [
-      new WeaveSet('{f}', ['fudge', 'trump', 'rump']),
-      new WeaveSet('{h}', ['here', 'there'])
-    ];
+  // public Test() {
+  //   const weaveSets: WeaveSet[] = [
+  //     new WeaveSet('{f}', ['fudge', 'trump', 'rump']),
+  //     new WeaveSet('{h}', ['here', 'there'])
+  //   ];
 
-    const testResult = this.WeaveWithSets('What the {f} is going on {h}', weaveSets);
+  //   const testResult = this.WeaveWithSets('What the {f} is going on {h}', weaveSets);
 
-    console.log(testResult);
-  }
+  //   console.log(testResult);
+  // }
 
   // 2019.03.24 - this is yet to be implemented. It would allow for multi-column code weaves.
   // eg. Take: "What the {f} is going on {h}". Swap {f} with fudge and trump. Swap {h} with here and there.
@@ -30,8 +30,10 @@ export class CodeWeaveService {
     let maxWeaveSetLength = 0;
 
     for (let i = 0; i < weaveSets.length; i++) {
-      if (maxWeaveSetLength < weaveSets[i].SwapValues.length) {
-        maxWeaveSetLength = weaveSets[i].SwapValues.length;
+      console.log(this._weaveSetManagerService.GetSwapValues(weaveSets[i]));
+
+      if (maxWeaveSetLength < this._weaveSetManagerService.GetSwapValues(weaveSets[i]).length) {
+        maxWeaveSetLength = this._weaveSetManagerService.GetSwapValues(weaveSets[i]).length;
       }
     }
 
@@ -42,8 +44,8 @@ export class CodeWeaveService {
       for (let j = 0; j < weaveSets.length; j++) {
         const weaveSet = weaveSets[j];
 
-        if (weaveSet.SwapValues.length > i) { // Ignore this weave set if it doesn't cover this row
-          newLine = this.ReplaceAll(newLine, weaveSet.SubstitutionValue, weaveSet.SwapValues[i]);
+        if (this._weaveSetManagerService.GetSwapValues(weaveSet).length > i) { // Ignore this weave set if it doesn't cover this row
+          newLine = this.ReplaceAll(newLine, weaveSet.SubstitutionValue, this._weaveSetManagerService.GetSwapValues(weaveSet)[i]);
         }
       }
 
@@ -55,18 +57,18 @@ export class CodeWeaveService {
     return result;
   };
 
-  public Weave = function (take: string, substitutionValue: string, swapValues: string[]) {
-    let result = '';
+  // public Weave = function (take: string, substitutionValue: string, swapValues: string[]) {
+  //   let result = '';
 
-    for (let i = 0; i < swapValues.length; i++) {
-      result += this.ReplaceAll(take, substitutionValue, swapValues[i]) + '\n';
+  //   for (let i = 0; i < swapValues.length; i++) {
+  //     result += this.ReplaceAll(take, substitutionValue, swapValues[i]) + '\n';
 
-      // Swap {{index}} for the counter i
-      result = this.ReplaceAll(result, '{{index}}', i);
-    }
+  //     // Swap {{index}} for the counter i
+  //     result = this.ReplaceAll(result, '{{index}}', i);
+  //   }
 
-    return result;
-  };
+  //   return result;
+  // };
 
   // public ReplaceSet = function (take: string): string {
 

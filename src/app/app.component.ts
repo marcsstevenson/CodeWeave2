@@ -5,17 +5,19 @@ import { CodeWeaveModel } from 'src/app/models/code-weave-model';
 import { map, filter, switchMap, debounceTime } from 'rxjs/operators';
 import { Observable, Subject, ReplaySubject, from, of, range, observable } from 'rxjs';
 import { WeaveSet } from './models/weave-set';
+import { WeaveSetManagerService } from './weave-set-manager.service';
 
 @Component({
   selector: 'cw-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  providers: [CodeWeaveService, StorageService]
+  providers: [CodeWeaveService, StorageService, WeaveSetManagerService]
 })
 export class AppComponent implements OnInit {
   constructor(
     private _storageService: StorageService,
-    private _codeWeaveService: CodeWeaveService
+    private _codeWeaveService: CodeWeaveService,
+    private _weaveSetManagerService: WeaveSetManagerService
   ) {}
 
   index = '<i>';
@@ -39,38 +41,16 @@ export class AppComponent implements OnInit {
     this.Weave();
   }
 
-  updateSwapValue(weaveSet: WeaveSet, index: number, newValue: string) {
-    console.log(newValue);
-    weaveSet.SwapValues[index] = newValue;
-
-    console.log(weaveSet.SwapValues[index]);
-    console.log(weaveSet.SwapValues);
-
-    this.SaveToStorage();
-    this.modelChange();
-  }
-
-  trackByFn(index: any, item: any) {
-    return index;
-  }
-
   addWeaveSet() {
     let maxWeaveSetLength = 0;
 
     for (let i = 0; i < this.model.WeaveSets.length; i++) {
-      if (maxWeaveSetLength < this.model.WeaveSets[i].SwapValues.length) {
-        maxWeaveSetLength = this.model.WeaveSets[i].SwapValues.length;
+      if (maxWeaveSetLength < this._weaveSetManagerService.GetSwapValues(this.model.WeaveSets[i]).length) {
+        maxWeaveSetLength = this._weaveSetManagerService.GetSwapValues(this.model.WeaveSets[i]).length;
       }
     }
 
-    // Make an array this same length for the swap values of the new weave set
-    const swapValues: string[] = [];
-
-    for (let i = 0; i < maxWeaveSetLength; i++) {
-      swapValues.push('');
-    }
-
-    this.model.WeaveSets.push(new WeaveSet('Substitution', swapValues));
+    this.model.WeaveSets.push(new WeaveSet('Substitution', []));
 
     this.SaveToStorage();
     this.modelChange();
@@ -109,11 +89,9 @@ export class AppComponent implements OnInit {
   // }
 
   Weave() {
-    // console.log('Weaving');
     this.SaveToStorage();
 
     this.result = this._codeWeaveService.WeaveWithSets(this.model.Take, this.model.WeaveSets);
-    console.log(this.model.WeaveSets[0].SwapValues);
   }
 
   SaveToStorage() {
