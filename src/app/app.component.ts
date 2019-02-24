@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { CodeWeaveService } from 'src/app/code-weave.service';
 import { StorageService } from 'src/app/storage.service';
-import { CodeWeaveModel } from 'src/app/code-weave-model';
+import { CodeWeaveModel } from 'src/app/models/code-weave-model';
 import { map, filter, switchMap, debounceTime } from 'rxjs/operators';
 import { Observable, Subject, ReplaySubject, from, of, range, observable } from 'rxjs';
+import { WeaveSet } from './models/weave-set';
 
 @Component({
   selector: 'cw-root',
@@ -14,8 +15,8 @@ import { Observable, Subject, ReplaySubject, from, of, range, observable } from 
 export class AppComponent implements OnInit {
   constructor(
     private _storageService: StorageService,
-    private _codeWeaveService: CodeWeaveService,
-  ) { }
+    private _codeWeaveService: CodeWeaveService
+  ) {}
 
   index = '<i>';
   title = 'cw';
@@ -30,56 +31,92 @@ export class AppComponent implements OnInit {
     const obs = this.subject.asObservable();
 
     obs
-      .pipe(debounceTime(500))
+      .pipe(debounceTime(500)) // Debounce here so that the UI updates after a period of time
       .subscribe({
-        next: value => this.Weave(), // 1
+        next: value => this.Weave()
       });
 
     this.Weave();
+  }
+
+  updateSwapValue(weaveSet: WeaveSet, index: number, newValue: string) {
+    console.log(newValue);
+    weaveSet.SwapValues[index] = newValue;
+
+    console.log(weaveSet.SwapValues[index]);
+    console.log(weaveSet.SwapValues);
+
+    this.SaveToStorage();
+    this.modelChange();
+  }
+
+  trackByFn(index: any, item: any) {
+    return index;
+  }
+
+  addWeaveSet() {
+    let maxWeaveSetLength = 0;
+
+    for (let i = 0; i < this.model.WeaveSets.length; i++) {
+      if (maxWeaveSetLength < this.model.WeaveSets[i].SwapValues.length) {
+        maxWeaveSetLength = this.model.WeaveSets[i].SwapValues.length;
+      }
+    }
+
+    // Make an array this same length for the swap values of the new weave set
+    const swapValues: string[] = [];
+
+    for (let i = 0; i < maxWeaveSetLength; i++) {
+      swapValues.push('');
+    }
+
+    this.model.WeaveSets.push(new WeaveSet('Substitution', swapValues));
+
+    this.SaveToStorage();
+    this.modelChange();
+  }
+
+  deleteWeaveSet(item: WeaveSet) {
+    const index: number = this.model.WeaveSets.indexOf(item);
+    if (index !== -1) {
+      this.model.WeaveSets.splice(index, 1);
+
+      this.SaveToStorage();
+      this.modelChange();
+    }
   }
 
   modelChange() {
     this.subject.next(this.model);
   }
 
-  SwapOrder() {
-    this.modelChange();
-    const values = this.model.WeaveValues.split('\n');
-    const newValues = this._codeWeaveService.SwapOrder(values);
-    let newWeaveValues = '';
+  // SwapOrder() {
+  //   this.modelChange();
+  //   const values = this.model.WeaveValues.split('\n');
+  //   const newValues = this._codeWeaveService.SwapOrder(values);
+  //   let newWeaveValues = '';
 
-    for (let i = 0; i < newValues.length; i++) {
-      newWeaveValues += newValues[i];
+  //   for (let i = 0; i < newValues.length; i++) {
+  //     newWeaveValues += newValues[i];
 
-      // Add a new line if this is not the last line
-      if (i < newValues.length - 1) {
-        newWeaveValues += '\n';
-      }
-    }
+  //     // Add a new line if this is not the last line
+  //     if (i < newValues.length - 1) {
+  //       newWeaveValues += '\n';
+  //     }
+  //   }
 
-    this.model.WeaveValues = newWeaveValues;
-  }
+  //   this.model.WeaveValues = newWeaveValues;
+  // }
 
   Weave() {
     // console.log('Weaving');
     this.SaveToStorage();
 
-    // console.log(this.model.Take);
-    const values = this.model.WeaveValues.split('\n');
-    // let workingValue = '';
-
-    // for (let i = 0; i < values.length; i++) {
-    //   workingValue += this._codeWeaveService.ReplaceAll(this.model.Take, this.model.WeaveSubstitution, values[i]) + '\n';
-    //     // Swap {{index} for the counter i
-    //     workingValue = this._codeWeaveService.ReplaceAll(workingValue, '{{index}}', i);
-    // }
-
-    this.result = this._codeWeaveService.Weave(values, this.model.Take, this.model.WeaveSubstitution);
+    this.result = this._codeWeaveService.WeaveWithSets(this.model.Take, this.model.WeaveSets);
+    console.log(this.model.WeaveSets[0].SwapValues);
   }
 
   SaveToStorage() {
     this._storageService.setCodeWeaveModel(this.model);
   }
-
-  // localStorage.setItem("key",value);
 }
